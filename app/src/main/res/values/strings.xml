@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Periksa Aplikasi</string>
+    <string name="title_activity_main">activity_main</string>
+    <string name="batal">Batal</string>
+    <string name="nama">Nama: -</string>
+    <string name="nis">NIS: -</string>
+    <string name="kelas">Kelas: -</string>
+    <string name="tambah_nilai">Tambah Nilai</string>
+    <string name="scan_tugas">Scan Tugas</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+</resources>

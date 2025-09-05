@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center_horizontal">
+
+        <!-- Nama -->
+        <TextView
+            android:id="@+id/txtNama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Lengkap"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- NIS -->
+        <TextView
+            android:id="@+id/txtNis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NIS: -"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- Kelas -->
+        <TextView
+            android:id="@+id/txtKelas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kelas: -"
+            android:textSize="16sp"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Dropdown pilih tugas -->
+        <Spinner
+            android:id="@+id/spinnerTugas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/etNilai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Masukkan nilai"
+            android:inputType="number"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/btnSubmitNilai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit Nilai"
+            android:layout_marginTop="12dp"/>
+
+
+    </LinearLayout>
+</ScrollView>
