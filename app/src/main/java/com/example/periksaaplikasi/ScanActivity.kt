@@ -1,13 +1,17 @@
 package com.example.periksaaplikasi
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.example.periksaaplikasi.model.Member
 import com.example.periksaaplikasi.model.MemberResponse
 import com.example.periksaaplikasi.data.network.RetrofitClient
@@ -28,7 +32,16 @@ class ScanActivity : ComponentActivity() {
 
     private var scannedId: String? = null
     private var currentMember: Member? = null
-
+    private val cameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            startScanner()
+        } else {
+            Toast.makeText(this, "Izin kamera diperlukan untuk scan QR code", Toast.LENGTH_LONG).show()
+            finish()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
@@ -38,6 +51,8 @@ class ScanActivity : ComponentActivity() {
         tvMemberNis = findViewById(R.id.tvMemberNis)
         tvMemberClass = findViewById(R.id.tvMemberClass)
         btnAddNilai = findViewById(R.id.btnAddNilai)
+
+        checkCameraPermission()
 
         // Jalankan scanner
         barcodeScanner.decodeContinuous(object : BarcodeCallback {
@@ -62,6 +77,30 @@ class ScanActivity : ComponentActivity() {
                 Toast.makeText(this, "Tunggu sebentar... Data belum siap", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+    private fun checkCameraPermission() {
+        when {
+            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
+                startScanner()
+            }
+            else -> {
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+        }
+    }
+
+    private fun startScanner() {
+        // Jalankan scanner
+        barcodeScanner.decodeContinuous(object : BarcodeCallback {
+            override fun barcodeResult(result: BarcodeResult?) {
+                result?.text?.let { qrContent ->
+                    if (qrContent != scannedId) {
+                        scannedId = qrContent
+                        fetchMemberById(qrContent)
+                    }
+                }
+            }
+        })
     }
 
     override fun onResume() {
