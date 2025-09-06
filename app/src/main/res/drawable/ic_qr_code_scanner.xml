@@ -1,0 +1,95 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorOnPrimary">
+
+    <!-- Corner brackets for scanner frame -->
+    <!-- Top Left Corner -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M2,2h5v2H4v3H2V2z" />
+
+    <!-- Top Right Corner -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M17,2h5v5h-2V4h-3V2z" />
+
+    <!-- Bottom Left Corner -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M2,17v5h5v-2H4v-3H2z" />
+
+    <!-- Bottom Right Corner -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M20,17v3h-3v2h5v-5H20z" />
+
+    <!-- QR Code pattern inside -->
+    <!-- Outer squares -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M6,6h3v3H6V6z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M15,6h3v3h-3V6z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M6,15h3v3H6V15z" />
+
+    <!-- Center dots/squares -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M7,7h1v1H7V7z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M16,7h1v1h-1V7z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M7,16h1v1H7V16z" />
+
+    <!-- Additional QR pattern elements -->
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M11,6h1v1h-1V6z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M13,6h1v1h-1V6z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M11,8h1v1h-1V8z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M15,11h1v1h-1V11z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M17,11h1v1h-1V11z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M11,13h1v1h-1V13z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M13,15h1v1h-1V15z" />
+
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M15,17h1v1h-1V17z" />
+
+    <!-- Scanning line effect (optional) -->
+    <path
+        android:fillColor="@android:color/white"
+        android:fillAlpha="0.7"
+        android:pathData="M3,12h18v1H3V12z" />
+
+</vector>

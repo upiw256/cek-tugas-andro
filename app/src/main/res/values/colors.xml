@@ -1,10 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Colors -->
+    <color name="primary_color">#6750A4</color>
+    <color name="primary_variant">#4F378B</color>
+    <color name="primary_pressed">#5A47A1</color>
+    <color name="on_primary_color">#FFFFFF</color>
+
+    <!-- Secondary Colors -->
+    <color name="secondary">#625B71</color>
+    <color name="secondary_pressed">#554F66</color>
+    <color name="secondary_focused">#6E6882</color>
+    <color name="secondary_disabled">#B3B3B3</color>
+    <color name="secondary_selected">#5A5570</color>
+    <color name="secondary_hover">#6B6480</color>
+    <color name="secondary_outline">#7A7489</color>
+
+    <!-- On Secondary Colors (Text/Icons on Secondary Background) -->
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_secondary_pressed">#F0F0F0</color>
+    <color name="on_secondary_focused">#FFFFFF</color>
+    <color name="on_secondary_disabled">#80FFFFFF</color>
+    <color name="on_secondary_selected">#E8E8E8</color>
+    <color name="on_secondary_hover">#F5F5F5</color>
+
+    <!-- Surface Colors -->
+    <color name="surface_color">#FFFFFF</color>
+    <color name="surface_variant">#F7F2FA</color>
+    <color name="on_surface_color">#1C1B1F</color>
+    <color name="on_surface_variant">#49454F</color>
+
+    <!-- Background Colors -->
+    <color name="background_color">#FFFBFE</color>
+    <color name="background_secondary">#F7F2FA</color>
+
+    <!-- Accent Colors -->
+    <color name="accent_color">#7C4DFF</color>
+    <color name="accent_light">#B47CFF</color>
+
+    <!-- Status Colors -->
+    <color name="success_color">#4CAF50</color>
+    <color name="warning_color">#FF9800</color>
+    <color name="error_color">#F44336</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1C1B1F</color>
+    <color name="text_secondary">#49454F</color>
+    <color name="text_disabled">#B3B3B3</color>
+    <color name="text_inverse">#FFFFFF</color>
+
+    <!-- Border & Divider Colors -->
+    <color name="divider_color">#E5E5E5</color>
+    <color name="border_color">#D1D5DB</color>
+    <color name="outline_color">#79747E</color>
+
+    <!-- Ripple Effects -->
+    <color name="ripple_color">#1A6750A4</color>
+    <color name="ripple_secondary">#1A625B71</color>
+
+    <!-- Dark Theme Support (Optional) -->
+    <color name="dark_surface">#121212</color>
+    <color name="dark_background">#0A0A0A</color>
+    <color name="dark_on_surface">#E6E1E5</color>
+
+    <!-- Transparent Colors -->
+    <color name="transparent">#00000000</color>
+    <color name="semi_transparent_black">#80000000</color>
+    <color name="semi_transparent_white">#80FFFFFF</color>
+
 </resources>

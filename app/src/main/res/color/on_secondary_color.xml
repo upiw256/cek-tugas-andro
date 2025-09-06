@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- State when text/icon is on pressed secondary background -->
+    <item android:state_pressed="true"
+        android:color="@color/on_secondary_pressed" />
+
+    <!-- State when text/icon is on focused secondary background -->
+    <item android:state_focused="true"
+        android:color="@color/on_secondary_focused" />
+
+    <!-- State when text/icon is on disabled secondary background -->
+    <item android:state_enabled="false"
+        android:color="@color/on_secondary_disabled" />
+
+    <!-- State when text/icon is on selected secondary background -->
+    <item android:state_selected="true"
+        android:color="@color/on_secondary_selected" />
+
+    <!-- State when text/icon is on hovered secondary background -->
+    <item android:state_hovered="true"
+        android:color="@color/on_secondary_hover" />
+
+    <!-- Default state - normal text/icon color on secondary background -->
+    <item android:color="@color/on_secondary" />
+
+</selector>
