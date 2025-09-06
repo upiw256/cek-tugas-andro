@@ -15,8 +15,6 @@ import androidx.core.content.ContextCompat
 import com.example.periksaaplikasi.model.Member
 import com.example.periksaaplikasi.model.MemberResponse
 import com.example.periksaaplikasi.data.network.RetrofitClient
-import com.journeyapps.barcodescanner.BarcodeCallback
-import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,16 +53,14 @@ class ScanActivity : ComponentActivity() {
         checkCameraPermission()
 
         // Jalankan scanner
-        barcodeScanner.decodeContinuous(object : BarcodeCallback {
-            override fun barcodeResult(result: BarcodeResult?) {
-                result?.text?.let { qrContent ->
-                    if (qrContent != scannedId) {
-                        scannedId = qrContent
-                        fetchMemberById(qrContent)
-                    }
+        barcodeScanner.decodeContinuous { result ->
+            result?.text?.let { qrContent ->
+                if (qrContent != scannedId) {
+                    scannedId = qrContent
+                    fetchMemberById(qrContent)
                 }
             }
-        })
+        }
 
         // Tombol Tambah Nilai
         btnAddNilai.setOnClickListener {
@@ -91,16 +87,14 @@ class ScanActivity : ComponentActivity() {
 
     private fun startScanner() {
         // Jalankan scanner
-        barcodeScanner.decodeContinuous(object : BarcodeCallback {
-            override fun barcodeResult(result: BarcodeResult?) {
-                result?.text?.let { qrContent ->
-                    if (qrContent != scannedId) {
-                        scannedId = qrContent
-                        fetchMemberById(qrContent)
-                    }
+        barcodeScanner.decodeContinuous { result ->
+            result?.text?.let { qrContent ->
+                if (qrContent != scannedId) {
+                    scannedId = qrContent
+                    fetchMemberById(qrContent)
                 }
             }
-        })
+        }
     }
 
     override fun onResume() {
@@ -118,22 +112,37 @@ class ScanActivity : ComponentActivity() {
         RetrofitClient.instance.getMember(memberId).enqueue(object : Callback<MemberResponse> {
             @SuppressLint("SetTextI18n")
             override fun onResponse(call: Call<MemberResponse>, response: Response<MemberResponse>) {
-                if (response.isSuccessful && response.body()?.success == true) {
+                if (response.isSuccessful) {
+                    val member = response.body()?.data
+                    if (member != null) {
+                        currentMember = member
+                        Toast.makeText(this@ScanActivity, "Siswa ditemukan ${member.nama_lengkap}", Toast.LENGTH_SHORT).show()
+                        tvMemberName.text = "Nama: ${member.nama_lengkap}"
+                        tvMemberNis.text = "NIS: ${member.nis}"
+                        tvMemberClass.text = "Kelas: ${member.kelas}"
 
-                    val member = response.body()!!.data
-                    currentMember = member
-                    Toast.makeText(this@ScanActivity, "Siswa ditemukan ${member?.nama_lengkap}", Toast.LENGTH_SHORT).show()
-                    tvMemberName.text = "Nama: ${member?.nama_lengkap}"
-                    tvMemberNis.text = "NIS: ${member?.nis}"
-                    tvMemberClass.text = "Kelas: ${member?.kelas}"
+                        Log.d("MEMBERS", "Data member ditemukan: $member")
+                    } else {
+                        Log.e("MEMBERS", "Data member kosong meskipun respons berhasil")
+                        Toast.makeText(this@ScanActivity, "Data member kosong", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    Toast.makeText(this@ScanActivity, "Member tidak ditemukan ${memberId}", Toast.LENGTH_SHORT).show()
+                    val errorBody = try {
+                        response.errorBody()?.string()
+                    } catch (e: Exception) {
+                        "Gagal membaca error body: ${e.message}"
+                    }
+
+                    Log.e("MEMBERS", "Gagal mengambil data member (status ${response.code()}): $errorBody")
+                    Toast.makeText(this@ScanActivity, "Data siswa tidak ditemukan", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<MemberResponse>, t: Throwable) {
-                Toast.makeText(this@ScanActivity, "Gagal koneksi API", Toast.LENGTH_SHORT).show()
+                Log.e("MEMBERS", "Gagal koneksi API: ${t.message}", t)
+                Toast.makeText(this@ScanActivity, "Gagal koneksi ke server", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
 }
