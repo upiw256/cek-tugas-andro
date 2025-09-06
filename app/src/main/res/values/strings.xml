@@ -2,13 +2,32 @@
     <string name="app_name">Periksa Aplikasi</string>
     <string name="title_activity_main">activity_main</string>
     <string name="batal">Batal</string>
-    <string name="nama">Nama: -</string>
+
+    <!-- Data siswa -->
+    <string name="nama">Nama</string>
     <string name="nis">NIS: -</string>
     <string name="kelas">Kelas: -</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+
+    <!-- Menu / tombol -->
     <string name="tambah_nilai">Tambah Nilai</string>
     <string name="scan_tugas">Scan Tugas</string>
     <string name="scan_qr_code">Scan QR Code</string>
-    <string name="quick_scan" />
-    <string name="scan_history" />
-    <string name="scan_subtitle" />
+    <string name="submit_nilai">Submit Nilai</string>
+
+    <!-- Scan -->
+    <string name="quick_scan">Quick Scan</string>
+    <string name="scan_history">Riwayat Scan</string>
+    <string name="scan_subtitle">Pindai kode QR untuk melanjutkan</string>
+
+    <!-- Input -->
+    <string name="foto_profil">Foto Profil</string>
+    <string name="masukkan_nilai">Masukkan Nilai</string>
+    <string name="pilih_tugas">Pilih Tugas</string>
+    <string name="pilih_atau_cari_tugas">Pilih atau cari tugas</string>
+    <string name="nis_placeholder">nis</string>
+    <string name="kelas_placeholder">kelas</string>
+    <string name="pilih_tugas_hint">pilih tugas</string>
+    <string name="pesan_toast">Pesan Toast</string>
+    <string name="toast">Toast</string>
 </resources>

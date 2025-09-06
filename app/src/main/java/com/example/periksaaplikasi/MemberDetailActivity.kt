@@ -1,13 +1,13 @@
 package com.example.periksaaplikasi
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
-import android.widget.Button
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.periksaaplikasi.data.model.GenericResponse
 import com.example.periksaaplikasi.data.model.NilaiRequest
 import com.example.periksaaplikasi.data.model.Tugas
@@ -15,6 +15,8 @@ import com.example.periksaaplikasi.data.model.TugasResponse
 import com.example.periksaaplikasi.data.network.RetrofitClient
 import com.example.periksaaplikasi.databinding.ActivityMemberDetailBinding
 import com.example.periksaaplikasi.model.MemberResponse
+import com.google.android.material.snackbar.Snackbar
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,12 +30,14 @@ class MemberDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMemberDetailBinding
 
     private var tugasList = listOf<Tugas>()
-    private lateinit var spinnerTugas: Spinner
+    private lateinit var spinnerTugas: AutoCompleteTextView
     private lateinit var etNilai: EditText
     private lateinit var btnSubmitNilai: Button
 
     private var memberId: String? = null
+    private var selectedTugasId: String? = null
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMemberDetailBinding.inflate(layoutInflater)
@@ -62,6 +66,7 @@ class MemberDetailActivity : AppCompatActivity() {
 
     private fun fetchMemberDetail(id: String) {
         RetrofitClient.instance.getMember(id).enqueue(object : Callback<MemberResponse> {
+            @SuppressLint("SetTextI18n")
             override fun onResponse(call: Call<MemberResponse>, response: Response<MemberResponse>) {
                 if (response.isSuccessful) {
                     val member = response.body()?.data
@@ -77,6 +82,7 @@ class MemberDetailActivity : AppCompatActivity() {
                 }
             }
 
+            @SuppressLint("SetTextI18n")
             override fun onFailure(call: Call<MemberResponse>, t: Throwable) {
                 binding.txtNama.text = "⚠️ Error koneksi: ${t.localizedMessage}"
             }
@@ -88,49 +94,51 @@ class MemberDetailActivity : AppCompatActivity() {
             override fun onResponse(call: Call<TugasResponse>, response: Response<TugasResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
                     tugasList = response.body()?.data ?: emptyList()
+
                     val adapter = ArrayAdapter(
                         this@MemberDetailActivity,
-                        android.R.layout.simple_spinner_item,
+                        android.R.layout.simple_dropdown_item_1line,
                         tugasList.map { it.judul }
                     )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinnerTugas.adapter = adapter
+                    spinnerTugas.setAdapter(adapter)
+
+                    spinnerTugas.setOnItemClickListener { _, _, position, _ ->
+                        selectedTugasId = tugasList[position]._id
+                    }
+
                 } else {
-                    Toast.makeText(this@MemberDetailActivity, "Gagal load tugas", Toast.LENGTH_SHORT).show()
+                    showCustomToast("Gagal load tugas", false)
                 }
             }
 
             override fun onFailure(call: Call<TugasResponse>, t: Throwable) {
-                Toast.makeText(this@MemberDetailActivity, "Error koneksi tugas: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+                showCustomToast("Error koneksi tugas: ${t.localizedMessage}", false)
             }
         })
     }
 
     private fun submitNilai() {
         val memberId = this.memberId ?: run {
-            Toast.makeText(this, "Member ID tidak tersedia", Toast.LENGTH_SHORT).show()
+            showCustomToast("Member ID tidak tersedia", false)
             return
         }
 
-        val selectedPosition = spinnerTugas.selectedItemPosition
-        if (selectedPosition == AdapterView.INVALID_POSITION || tugasList.isEmpty()) {
-            Toast.makeText(this, "Pilih tugas dulu", Toast.LENGTH_SHORT).show()
+        if (selectedTugasId == null) {
+            showCustomToast("Pilih tugas dulu", false)
             return
         }
 
         val nilaiText = etNilai.text.toString()
         if (nilaiText.isBlank()) {
-            Toast.makeText(this, "Masukkan nilai", Toast.LENGTH_SHORT).show()
+            showCustomToast("Masukkan nilai", false)
             return
         }
 
         val nilaiInt = nilaiText.toIntOrNull()
         if (nilaiInt == null || nilaiInt < 0) {
-            Toast.makeText(this, "Nilai tidak valid", Toast.LENGTH_SHORT).show()
+            showCustomToast("Nilai tidak valid", false)
             return
         }
-
-        val tugasId = tugasList[selectedPosition]._id
 
         val now = Date()
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
@@ -139,7 +147,7 @@ class MemberDetailActivity : AppCompatActivity() {
 
         val body = NilaiRequest(
             member_id = memberId,
-            tugas_id = tugasId,
+            tugas_id = selectedTugasId!!,
             nilai = nilaiInt,
             tanggal = tanggalString
         )
@@ -147,16 +155,44 @@ class MemberDetailActivity : AppCompatActivity() {
         RetrofitClient.instance.postNilai(memberId, body).enqueue(object : Callback<GenericResponse> {
             override fun onResponse(call: Call<GenericResponse>, response: Response<GenericResponse>) {
                 if (response.isSuccessful && response.body()?.success == true) {
-                    Toast.makeText(this@MemberDetailActivity, "Nilai berhasil disimpan", Toast.LENGTH_SHORT).show()
+                    showCustomToast("Nilai berhasil disimpan", true)
                     etNilai.text.clear()
+                    spinnerTugas.text.clear()
+                    selectedTugasId = null
                 } else {
-                    Toast.makeText(this@MemberDetailActivity, "Gagal menyimpan nilai", Toast.LENGTH_SHORT).show()
+                    // baca pesan dari backend
+                    val errorMessage = try {
+                        val errorJson = response.errorBody()?.string()
+                        val jsonObj = JSONObject(errorJson ?: "{}")
+                        jsonObj.optString("message", "Gagal menyimpan nilai")
+                    } catch (e: Exception) {
+                        "Gagal menyimpan nilai"
+                    }
+
+                    showCustomToast(errorMessage, false)
                 }
             }
 
             override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
-                Toast.makeText(this@MemberDetailActivity, "Error koneksi: ${t.localizedMessage}", Toast.LENGTH_SHORT).show()
+                showCustomToast("Error koneksi: ${t.localizedMessage}", false)
             }
         })
+    }
+
+    @SuppressLint("InflateParams")
+    private fun showCustomToast(message: String, isSuccess: Boolean) {
+        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+
+        if (isSuccess) {
+            snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.success_color))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.setAction("✔") { /* optional: dismiss */ }
+        } else {
+            snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.error_color))
+            snackbar.setTextColor(Color.WHITE)
+            snackbar.setAction("✖") { /* optional: dismiss */ }
+        }
+
+        snackbar.show()
     }
 }

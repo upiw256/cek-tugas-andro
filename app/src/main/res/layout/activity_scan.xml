@@ -1,45 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?android:attr/colorBackground"
+    android:padding="12dp">
 
-    <!-- Kamera -->
+    <!-- Kamera / Scanner -->
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
         android:id="@+id/barcode_scanner"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:background="@android:color/black" />
 
-    <!-- Detail Member -->
-    <LinearLayout
+    <!-- Card Detail Member -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true"
+        android:backgroundTint="@android:color/white">
 
-        <TextView
-            android:id="@+id/tvMemberName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nama" />
-
-        <TextView
-            android:id="@+id/tvMemberNis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nis" />
-
-        <TextView
-            android:id="@+id/tvMemberClass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/kelas" />
-
-        <Button
-            android:id="@+id/btnAddNilai"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tambah_nilai"
-            android:layout_marginTop="12dp"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvMemberName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nama"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/tvMemberNis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nis"
+                android:layout_marginTop="4dp"
+                android:textSize="16sp"
+                android:textColor="@android:color/darker_gray"/>
+
+            <TextView
+                android:id="@+id/tvMemberClass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kelas"
+                android:layout_marginTop="2dp"
+                android:textSize="16sp"
+                android:textColor="@android:color/darker_gray"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddNilai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/tambah_nilai"
+                style="@style/Widget.MaterialComponents.Button"
+                app:cornerRadius="12dp"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
