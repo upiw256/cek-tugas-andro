@@ -1,6 +1,7 @@
 package com.example.periksaaplikasi
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -159,6 +160,11 @@ class MemberDetailActivity : AppCompatActivity() {
                     etNilai.text.clear()
                     spinnerTugas.text.clear()
                     selectedTugasId = null
+
+                    val intent = Intent(this@MemberDetailActivity, ScanActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    finish()
                 } else {
                     // baca pesan dari backend
                     val errorMessage = try {
